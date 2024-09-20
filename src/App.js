@@ -1,35 +1,24 @@
-import {
-  forwardRef, 
-  useRef, 
-  useImperativeHandle
-} from 'react';
+import { useState, useRef } from 'react';
 
-const MyInput = forwardRef((props, ref) => {
-  const realInputRef = useRef(null);
-  useImperativeHandle(ref, () => ({
-    // Only expose focus and nothing else
-    focus() {
-      realInputRef.current.focus();
-    },
-  }));
-  return <input {...props} ref={realInputRef} />;
-});
-
-export default function Form() {
-  const inputRef = useRef(null);
-
-  function handleClick() {
-    inputRef.current.focus();
-    // throws error select not a function
-    // inputRef.current.select();
-  }
+export default function Counter() {
+  const [show, setShow] = useState(true);
+  const ref = useRef(null);
 
   return (
-    <>
-      <MyInput ref={inputRef} />
-      <button onClick={handleClick}>
-        Focus the input
+    <div>
+      <button
+        onClick={() => {
+          setShow(!show);
+        }}>
+        Toggle with setState
       </button>
-    </>
+      <button
+        onClick={() => {
+          ref.current.remove();
+        }}>
+        Remove from the DOM
+      </button>
+      {show && <p ref={ref}>Hello world</p>}
+    </div>
   );
 }
