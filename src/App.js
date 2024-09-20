@@ -1,13 +1,22 @@
-import Carousel from "./Carousel";
+import { forwardRef, useRef } from 'react';
 
-export default function CatFriends() {
-  return <Carousel list={catList} />;
-}
+const MyInput = forwardRef((props, ref) => {
+  return <input ref={ref} />;
+});
 
-const catList = [];
-for (let i = 10; i < 20; i++) {
-  catList.push({
-    id: i,
-    imageUrl: "https://picsum.photos/200/300?random=" + i
-  });
+export default function Form() {
+  const inputRef = useRef(null);
+
+  function handleClick() {
+    inputRef.current.focus();
+  }
+
+  return (
+    <>
+      <MyInput ref={inputRef} />
+      <button onClick={handleClick}>
+        Focus the input
+      </button>
+    </>
+  );
 }
