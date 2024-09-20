@@ -1,7 +1,18 @@
-import { forwardRef, useRef } from 'react';
+import {
+  forwardRef, 
+  useRef, 
+  useImperativeHandle
+} from 'react';
 
 const MyInput = forwardRef((props, ref) => {
-  return <input ref={ref} />;
+  const realInputRef = useRef(null);
+  useImperativeHandle(ref, () => ({
+    // Only expose focus and nothing else
+    focus() {
+      realInputRef.current.focus();
+    },
+  }));
+  return <input {...props} ref={realInputRef} />;
 });
 
 export default function Form() {
@@ -9,6 +20,8 @@ export default function Form() {
 
   function handleClick() {
     inputRef.current.focus();
+    // throws error select not a function
+    // inputRef.current.select();
   }
 
   return (
